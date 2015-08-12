@@ -3,6 +3,7 @@ package com.leekh13.exerciserecord;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.StrictMode;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -38,10 +39,16 @@ public class MainActivity extends ActionBarActivity {
 
     static DBManager dbManager;
 
-
+    public static ClientConnection mClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //if (DEVELOPER_MODE) {
+
+        StrictMode.enableDefaults();
+        //}
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -129,6 +136,7 @@ public class MainActivity extends ActionBarActivity {
         {
             case R.id.button:   //기록 입력 버튼 눌렸을때
             {
+                /*
                 EditText editText = (EditText) findViewById(R.id.editText);
                 String strDate = editText.getText().toString();
 
@@ -144,13 +152,18 @@ public class MainActivity extends ActionBarActivity {
                 dbManager.insert("insert into EXER_RECORD(  exer_date , exer_name, exer_kg, exer_count , exer_intensity ) values(" +
                         "'" + strDate + "', '" + strName + "', " + strKg + "," + strCount + ", " + intensity + ")");
                 Toast.makeText(this, "메시지 날짜:"+ strDate + " 운동명:" + strName + " 무게:" + strKg + " 횟수:" + strCount + " 강도:" + intensity , LENGTH_SHORT).show();
+                */
+                mClient = new ClientConnection();
 
-
+                int ResultCode = mClient.Begin( "192.168.10.67", 9000, 0, 0);
+                if( ResultCode == 1)
+                {
+                    mClient.m_AppID = 1;
+                    mClient.sendLoginRelayServer();
+                }
 
             }
-
-
-                break;
+            break;
         }
     }
 
