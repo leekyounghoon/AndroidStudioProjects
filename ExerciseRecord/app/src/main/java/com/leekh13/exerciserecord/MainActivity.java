@@ -65,6 +65,11 @@ public class MainActivity extends ActionBarActivity {
         spinner = (Spinner) findViewById(R.id.spinner);
 
         Spinner_Init();
+
+        //서버 접속
+        mClient = new ClientConnection();
+        mClient.Begin("192.168.10.67", 9000, 0, 0);
+
     }
 
     @Override
@@ -153,14 +158,9 @@ public class MainActivity extends ActionBarActivity {
                         "'" + strDate + "', '" + strName + "', " + strKg + "," + strCount + ", " + intensity + ")");
                 Toast.makeText(this, "메시지 날짜:"+ strDate + " 운동명:" + strName + " 무게:" + strKg + " 횟수:" + strCount + " 강도:" + intensity , LENGTH_SHORT).show();
                 */
-                mClient = new ClientConnection();
 
-                int ResultCode = mClient.Begin( "192.168.10.67", 9000, 0, 0);
-                if( ResultCode == 1)
-                {
-                    mClient.m_AppID = 1;
-                    mClient.sendLoginRelayServer();
-                }
+               mClient.m_AppID = 1;
+               mClient.sendLoginRelayServer();
 
             }
             break;
