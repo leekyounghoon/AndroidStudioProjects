@@ -1,5 +1,6 @@
 package com.leekh13.exerciserecord;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -30,6 +31,8 @@ public class ClientConnection extends Thread {
 
     public boolean m_Connection = false;
     public int m_Level = 0;
+    public String mIP;
+    public int mPort;
 
     public ClientConnection() { }
 
@@ -38,16 +41,16 @@ public class ClientConnection extends Thread {
         try {
                //InetSocketAddress address = new InetSocketAddress(ip, port);
                 //mSC = SocketChannel.open(address);
-            mSC = SocketChannel.open( new InetSocketAddress(ip, port) );
+
+            mIP = ip;
+            mPort = port;
+
             //mSC = SocketChannel.open(new InetSocketAddress(ip, port));
-
-
-
             //InetAddress serverAddr = InetAddress.getByName(ip);
             //Socket socket = new Socket(serverAddr, port);
 
 
-                m_Connection = true;
+                m_Connection = false;
                 m_AppID = AppID;
                 m_UserSN = UserSN;
                 m_Result = 1;
@@ -110,6 +113,12 @@ public class ClientConnection extends Thread {
         // System.out.println("ClientConnection::run()");
         mEnd = false;
         ByteBuffer bb = ByteBuffer.allocate(4096);
+
+        try {
+            mSC = SocketChannel.open(new InetSocketAddress( mIP, mPort));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         byte arr[] = new byte[4096];
 
